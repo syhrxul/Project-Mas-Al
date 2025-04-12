@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\User;
 
 use App\Filament\Resources\User\RentalResource\Pages;
+use App\Filament\Resources\User\RentalHistoryResource;
 use App\Models\Rental;
 use Carbon\Carbon;
 use Filament\Forms;
@@ -33,7 +34,6 @@ class RentalResource extends Resource
     {
         return $table
             ->columns([
-                
                 Tables\Columns\ImageColumn::make('product.image')
                     ->label('Image')
                     ->disk('public')
@@ -101,6 +101,7 @@ class RentalResource extends Resource
                             ->send();
                     }),
             ])
+            // In the bulkActions section, update the checkout action:
             ->bulkActions([
                 Tables\Actions\BulkAction::make('checkout')
                     ->label('Checkout Selected Items')
@@ -118,17 +119,20 @@ class RentalResource extends Resource
                                     'quantity' => $product->quantity - $record->quantity
                                 ]);
                                 
-                                // Update status to 'confirmed'
-                                $record->update(['status' => 'confirmed']);
+                                // Update status to 'waiting' instead of 'confirmed'
+                                $record->update(['status' => 'waiting']);
                                 
                                 // Send notification for each item
                                 Notification::make()
-                                    ->title('Item confirmed')
-                                    ->body("Your rental for {$record->product->title} has been confirmed.")
+                                    ->title('Order submitted')
+                                    ->body("Your rental for {$record->product->title} has been submitted and is waiting for admin approval.")
                                     ->success()
                                     ->send();
                             }
                         }
+                        
+                        // Use a more direct approach to redirect
+                        return redirect(RentalHistoryResource::getUrl('index'));
                     })
             ]);
     }
