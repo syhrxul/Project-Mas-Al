@@ -6,6 +6,8 @@
     <title>Rental Equipment - Your One-Stop Shop for Equipment Rental</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Add Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <style>
         .bg-primary {
             background-color: #fe0000;
@@ -42,7 +44,19 @@
                 <h1 class="text-2xl font-bold text-primary">Al Management</h1>
             </div>
             <div class="flex items-center space-x-4">
-                <a href="{{ route('login') }}" class="px-4 py-2 bg-primary text-white rounded hover:bg-primary-dark transition">Login</a>
+                <!-- Login dropdown -->
+                <div class="relative" x-data="{ open: false }">
+                    <button @click="open = !open" class="px-4 py-2 bg-primary text-white rounded hover:bg-primary-dark transition flex items-center">
+                        Login
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    <div x-show="open" @click.away="open = false" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg overflow-hidden z-20">
+                        <a href="{{ url('admin/login') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Admin Login</a>
+                        <a href="{{ url('user/login') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">User Login</a>
+                    </div>
+                </div>
                 <a href="{{ route('register') }}" class="px-4 py-2 border border-primary text-primary rounded hover:bg-red-50 transition">Register</a>
             </div>
         </div>
