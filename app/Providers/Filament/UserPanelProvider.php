@@ -18,6 +18,7 @@ use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use App\Http\Middleware\UserMiddleware;
+use App\Filament\Pages\User\Dashboard;
 
 class UserPanelProvider extends PanelProvider
 {
@@ -30,12 +31,10 @@ class UserPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Blue,
             ])
-            // Removing the resource discovery for now
-            // ->discoverResources(in: app_path('Filament/Resources/User'), for: 'App\\Filament\\Resources\\User')
-            // Not discovering custom pages, only using the default Dashboard
-            // ->discoverPages(in: app_path('Filament/Pages/User'), for: 'App\\Filament\\Pages\\User')
+            ->discoverResources(in: app_path('Filament/Resources/User'), for: 'App\\Filament\\Resources\\User')
+            ->discoverPages(in: app_path('Filament/Pages/User'), for: 'App\\Filament\\Pages\\User')
             ->pages([
-                Pages\Dashboard::class,
+                Dashboard::class,
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets/User'), for: 'App\\Filament\\Widgets\\User')
             ->widgets([
