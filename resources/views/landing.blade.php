@@ -38,25 +38,13 @@
 </head>
 <body class="bg-gray-100 font-sans">
     <!-- Header -->
-    <header class="bg-white shadow-md">
+    <header class=" border-gray-700 shadow-md">
         <div class="container mx-auto px-4 py-6 flex justify-between items-center">
             <div class="flex items-center">
                 <h1 class="text-2xl font-bold text-primary">Al Management</h1>
             </div>
             <div class="flex items-center space-x-4">
-                <!-- Login dropdown -->
-                <div class="relative" x-data="{ open: false }">
-                    <button @click="open = !open" class="px-4 py-2 bg-primary text-white rounded hover:bg-primary-dark transition flex items-center">
-                        Login
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                        </svg>
-                    </button>
-                    <div x-show="open" @click.away="open = false" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg overflow-hidden z-20">
-                        <a href="{{ url('admin/login') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Admin Login</a>
-                        <a href="{{ url('user/login') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">User Login</a>
-                    </div>
-                </div>
+                <a href="{{ route('login') }}" class="px-4 py-2 border border-primary text-primary rounded hover:bg-red-50 transition">Login</a>
                 <a href="{{ route('register') }}" class="px-4 py-2 border border-primary text-primary rounded hover:bg-red-50 transition">Register</a>
             </div>
         </div>
@@ -69,11 +57,8 @@
                 <h2 class="text-4xl md:text-5xl font-bold mb-6">Jual, Beli, Sewa Kamera dan Iphone</h2>
                 <p class="text-xl mb-8">Jual Beli Kamera Bekas Purbalingga</p>
                 <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-                    <a href="{{ route('login') }}" class="px-8 py-3 bg-white text-primary font-bold rounded-lg hover:bg-gray-100 transition text-center">Get Started</a>
+                <a href="{{ route('login') }}" class="px-8 py-3 bg-primary text-white font-bold rounded-lg hover:bg-primary-dark transition">Get Started</a>
                 </div>
-            </div>
-            <div class="md:w-1/2">
-                <img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Equipment Rental" class="rounded-lg shadow-xl">
             </div>
         </div>
     </section>
@@ -186,9 +171,19 @@
                 <div>
                     <div class="h-full bg-gray-300 rounded-lg">
                         <!-- Placeholder for a map -->
-                        <div class="w-full h-full min-h-[300px] flex items-center justify-center">
-                            <p class="text-gray-600">Map Location</p>
-                        </div>
+                        <div class="w-full h-full min-h-[300px]">
+                        <iframe 
+  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3952.2900482996423!2d109.356873!3d-7.402685!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e65599bdffdca79%3A0x17b1d97c69f23fc9!2sAL%20CAMERA%20PURBALINGGA!5e0!3m2!1sid!2sid!4v1681081011123!5m2!1sid!2sid"
+  width="100%" 
+  height="100%" 
+  style="border:0;" 
+  allowfullscreen="" 
+  loading="lazy" 
+  referrerpolicy="no-referrer-when-downgrade">
+</iframe>
+
+                    </div>
+
                     </div>
                 </div>
             </div>
@@ -202,9 +197,13 @@
                 <div>
                     <h3 class="text-xl font-bold mb-4">Al Management</h3>
                     <div class="flex space-x-4">
-                        <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-instagram"></i></a>
+                    <a href="https://wa.me/6289612222209" target="_blank" class="text-gray-400 hover:text-white transition">
+                         <i class="fab fa-whatsapp"></i>
+                    </a>
+                    <a href="https://www.instagram.com/alcamera__/" target="_blank" class="text-gray-400 hover:text-white transition">
+                            <i class="fab fa-instagram"></i>
+                    </a>
+
                         <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-tiktok"></i></a>
                     </div>
                 </div>
