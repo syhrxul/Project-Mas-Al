@@ -82,4 +82,13 @@ class User extends Authenticatable
     {
         return $this->hasRole('admin');
     }
+
+    // Add this method to the User model
+    /**
+     * Get the rentals for the user.
+     */
+    public function rentals()
+    {
+        return $this->hasMany(Rental::class);
+    }
 }

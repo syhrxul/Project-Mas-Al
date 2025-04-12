@@ -21,6 +21,7 @@ class ProductResource extends Resource
 
     protected static ?string $navigationGroup = 'Content Management';
 
+    // In the form method, add the quantity field
     public static function form(Form $form): Form
     {
         return $form
@@ -64,6 +65,19 @@ class ProductResource extends Resource
                                     ->label('Price (24 Hours)')
                                     ->required()
                                     ->numeric()
+                                    ->minValue(0),
+                                
+                                Forms\Components\TextInput::make('quantity')
+                                    ->label('Available Quantity')
+                                    ->required()
+                                    ->numeric()
+                                    ->minValue(0)
+                                    ->default(0),
+                                
+                                Forms\Components\TextInput::make('price_24_hours')
+                                    ->label('Price (24 Hours)')
+                                    ->required()
+                                    ->numeric()
                                     ->prefix('Rp'),
                             ])
                             ->columns(2),
@@ -96,6 +110,7 @@ class ProductResource extends Resource
             ->columns(3);
     }
 
+    // In the table method, add the quantity column
     public static function table(Table $table): Table
     {
         return $table
@@ -121,6 +136,10 @@ class ProductResource extends Resource
                 Tables\Columns\TextColumn::make('price_24_hours')
                     ->label('Price (24 Hours)')
                     ->money('IDR')
+                    ->sortable(),
+                
+                Tables\Columns\TextColumn::make('quantity')
+                    ->label('Available Quantity')
                     ->sortable(),
                 
                 Tables\Columns\IconColumn::make('is_active')

@@ -16,6 +16,7 @@ class Product extends Model
      *
      * @var array<int, string>
      */
+    // Add 'quantity' to the fillable array in the Product model
     protected $fillable = [
         'category_id',
         'title',
@@ -25,6 +26,7 @@ class Product extends Model
         'price_24_hours',
         'image',
         'is_active',
+        'quantity',
     ];
 
     /**
@@ -64,5 +66,14 @@ class Product extends Model
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
+    }
+
+    // Add this method to the Product model
+    /**
+     * Get the rentals for the product.
+     */
+    public function rentals()
+    {
+        return $this->hasMany(Rental::class);
     }
 }

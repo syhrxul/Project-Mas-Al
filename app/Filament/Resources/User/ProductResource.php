@@ -26,6 +26,7 @@ class ProductResource extends Resource
 
     protected static ?string $navigationGroup = 'Catalog';
 
+    // In the table method, add the quantity column
     public static function table(Table $table): Table
     {
         return $table
@@ -52,6 +53,10 @@ class ProductResource extends Resource
                     ->label('Price (24 Hours)')
                     ->money('IDR')
                     ->sortable(),
+                
+                Tables\Columns\TextColumn::make('quantity')
+                    ->label('Available Quantity')
+                    ->sortable(),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('category')
@@ -62,6 +67,7 @@ class ProductResource extends Resource
             ]);
     }
 
+    // In the infolist method, add the quantity field
     public static function infolist(Infolist $infolist): Infolist
     {
         return $infolist
@@ -83,6 +89,9 @@ class ProductResource extends Resource
                         Infolists\Components\TextEntry::make('price_24_hours')
                             ->label('Price (24 Hours)')
                             ->money('IDR'),
+                        
+                        Infolists\Components\TextEntry::make('quantity')
+                            ->label('Available Quantity'),
                         
                         Infolists\Components\TextEntry::make('description')
                             ->markdown()
