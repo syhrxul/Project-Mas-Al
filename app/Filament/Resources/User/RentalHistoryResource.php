@@ -46,13 +46,13 @@ class RentalHistoryResource extends Resource
                     ->sortable(),
                 
                 Tables\Columns\TextColumn::make('start_datetime')
-                    ->label('Start Date & Time')
-                    ->dateTime()
+                    ->label('Start Date')
+                    ->date()
                     ->sortable(),
                 
                 Tables\Columns\TextColumn::make('end_datetime')
-                    ->label('End Date & Time')
-                    ->dateTime()
+                    ->label('End Date')
+                    ->date()
                     ->sortable(),
                 
                 Tables\Columns\TextColumn::make('duration')
@@ -79,22 +79,26 @@ class RentalHistoryResource extends Resource
                 
                 Tables\Columns\BadgeColumn::make('status')
                     ->colors([
+                        'warning' => 'waiting',
                         'success' => 'confirmed',
+                        'danger' => ['cancelled', 'rejected'],
                         'primary' => 'completed',
-                        'danger' => 'cancelled',
                     ]),
                 
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->label('Confirmed On')
+                    ->label('Last Updated')
                     ->dateTime()
                     ->sortable(),
+                
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
                     ->options([
+                        'waiting' => 'Waiting Approval',
                         'confirmed' => 'Confirmed',
-                        'completed' => 'Completed',
+                        'rejected' => 'Rejected',
                         'cancelled' => 'Cancelled',
+                        'completed' => 'Completed',
                     ]),
             ])
             ->actions([
@@ -106,7 +110,7 @@ class RentalHistoryResource extends Resource
     {
         return parent::getEloquentQuery()
             ->where('user_id', Auth::id())
-            ->whereIn('status', ['confirmed', 'completed', 'cancelled'])
+            ->whereIn('status', ['waiting', 'confirmed', 'completed', 'cancelled', 'rejected'])
             ->orderBy('updated_at', 'desc');
     }
 

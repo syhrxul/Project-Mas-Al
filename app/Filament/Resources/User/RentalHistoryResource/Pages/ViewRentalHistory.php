@@ -19,20 +19,14 @@ class ViewRentalHistory extends ViewRecord
     {
         return $infolist
             ->schema([
-                Section::make('Rental Details')
+                Section::make('Rental Status')
                     ->schema([
-                        Grid::make(3)
+                        Grid::make(2)
                             ->schema([
-                                TextEntry::make('id')
-                                    ->label('Rental ID')
-                                    ->weight('bold'),
-                                
-                                TextEntry::make('created_at')
-                                    ->label('Requested On')
-                                    ->dateTime(),
-                                
                                 TextEntry::make('status')
+                                    ->label('Status')
                                     ->badge()
+                                    ->size('lg')
                                     ->color(fn (string $state): string => match ($state) {
                                         'waiting' => 'warning',
                                         'confirmed' => 'success',
@@ -41,8 +35,22 @@ class ViewRentalHistory extends ViewRecord
                                         'completed' => 'primary',
                                         default => 'gray',
                                     }),
+                                
+                                TextEntry::make('updated_at')
+                                    ->label('Last Updated')
+                                    ->dateTime(),
                             ]),
                     ]),
+                
+                Section::make('Rejection Reason')
+                    ->schema([
+                        TextEntry::make('admin_notes')
+                            ->label('Admin Explanation')
+                            ->markdown()
+                            ->columnSpanFull(),
+                    ])
+                    ->visible(fn ($record) => $record->status === 'rejected' && !empty($record->admin_notes))
+                    ->collapsible(false),
                 
                 Section::make('Product Information')
                     ->schema([
@@ -100,15 +108,20 @@ class ViewRentalHistory extends ViewRecord
                             ]),
                     ]),
                 
-                Section::make('Admin Response')
+                Section::make('Rental Details')
                     ->schema([
-                        TextEntry::make('admin_notes')
-                            ->label('Admin Notes')
-                            ->placeholder('No notes from admin'),
-                    ])
-                    ->hidden(fn ($record) => empty($record->admin_notes)),
+                        Grid::make(2)
+                            ->schema([
+                                TextEntry::make('id')
+                                    ->label('Rental ID'),
+                                
+                                TextEntry::make('created_at')
+                                    ->label('Requested On')
+                                    ->dateTime(),
+                            ]),
+                    ]),
                 
-                Section::make('Additional Information')
+                Section::make('Your Notes')
                     ->schema([
                         TextEntry::make('notes')
                             ->label('Notes')
