@@ -2,13 +2,9 @@
 
 namespace App\Filament\Pages\User;
 
-use App\Models\Category;
-use App\Models\Product;
-use Filament\Pages\Page;
-use Filament\Actions\Action;
-use Illuminate\Contracts\View\View;
+use Filament\Pages\Dashboard as BaseDashboard;
 
-class Dashboard extends Page
+class Dashboard extends BaseDashboard
 {
     protected static ?string $navigationIcon = 'heroicon-o-home';
 
@@ -16,20 +12,9 @@ class Dashboard extends Page
 
     protected static ?int $navigationSort = -2;
 
-    public function getCategories()
-    {
-        return Category::where('is_active', true)->withCount('products')->get();
-    }
+    protected static ?string $navigationLabel = 'Dashboard';
 
-    public function getFeaturedProducts()
-    {
-        return Product::where('is_active', true)->latest()->take(6)->get();
-    }
+    protected static ?string $title = 'Dashboard';
 
-    protected function getHeaderActions(): array
-    {
-        return [
-            // Header actions have been removed
-        ];
-    }
+    protected static ?string $slug = 'dashboard';
 }

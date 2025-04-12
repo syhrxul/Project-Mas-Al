@@ -34,7 +34,7 @@ class UserPanelProvider extends PanelProvider
             ->discoverResources(in: app_path('Filament/Resources/User'), for: 'App\\Filament\\Resources\\User')
             ->discoverPages(in: app_path('Filament/Pages/User'), for: 'App\\Filament\\Pages\\User')
             ->pages([
-                Dashboard::class,
+                \App\Filament\Pages\User\Dashboard::class,
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets/User'), for: 'App\\Filament\\Widgets\\User')
             ->widgets([

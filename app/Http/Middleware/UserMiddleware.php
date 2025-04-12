@@ -10,14 +10,24 @@ class UserMiddleware
 {
     /**
      * Handle an incoming request.
-     *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!auth()->check() || !auth()->user()->hasRole('user')) {
-            abort(403, 'Unauthorized action.');
+        // Check if user is authenticated
+        if (!auth()->check()) {
+            return redirect()->route('login');
         }
+
+        // If user has admin role, redirect to admin dashboard
+        if (auth()->user()->hasRole('admin')) {
+            return redirect('/admin')->with('error', 'Admin users cannot access the user dashboard.');
+        }
+
+        // Ensure user has the user role if using role-based permissions
+        // Uncomment if you have role checking implemented
+        // if (!auth()->user()->hasRole('user')) {
+        //     abort(403, 'Unauthorized action.');
+        // }
 
         return $next($request);
     }

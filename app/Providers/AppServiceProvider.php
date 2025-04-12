@@ -19,6 +19,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // Register custom validation rules if needed
+        // For example, password strength validation
     }
 }
