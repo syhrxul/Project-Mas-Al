@@ -40,8 +40,7 @@ class ProductResource extends Resource
                 Forms\Components\TextInput::make('price_24_hours')
                     ->required()
                     ->numeric(),
-                Forms\Components\FileUpload::make('image')
-                    ->image(),
+                // Image upload component removed
                 Forms\Components\Toggle::make('is_active')
                     ->required(),
             ]);
@@ -52,7 +51,6 @@ class ProductResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('category.name')
-                    ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('title')
                     ->searchable(),
@@ -64,7 +62,7 @@ class ProductResource extends Resource
                 Tables\Columns\TextColumn::make('price_24_hours')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\ImageColumn::make('image'),
+                // Image column removed (if it existed)
                 Tables\Columns\IconColumn::make('is_active')
                     ->boolean(),
                 Tables\Columns\TextColumn::make('created_at')
