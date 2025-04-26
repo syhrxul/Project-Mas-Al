@@ -6,19 +6,15 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        Schema::table('rentals', function (Blueprint $table) {
-            $table->integer('quantity')->default(1)->after('end_datetime');
-        });
+        if (!Schema::hasColumn('rentals', 'quantity')) {
+            Schema::table('rentals', function (Blueprint $table) {
+                $table->integer('quantity')->default(1)->after('end_datetime');
+            });
+        }
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::table('rentals', function (Blueprint $table) {

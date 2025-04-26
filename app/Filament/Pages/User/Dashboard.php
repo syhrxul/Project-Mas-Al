@@ -2,19 +2,29 @@
 
 namespace App\Filament\Pages\User;
 
+use App\Livewire\DashboardAnnouncement;
+use App\Livewire\LatestProductsWidget;
 use Filament\Pages\Dashboard as BaseDashboard;
 
 class Dashboard extends BaseDashboard
 {
-    protected static ?string $navigationIcon = 'heroicon-o-home';
+    protected static string $view = 'filament.pages.dashboard';
 
-    protected static string $view = 'filament.pages.user.dashboard';
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            DashboardAnnouncement::class,
+            LatestProductsWidget::class,
+        ];
+    }
 
-    protected static ?int $navigationSort = -2;
+    public function getTitle(): string
+    {
+        return '';
+    }
 
-    protected static ?string $navigationLabel = 'Dashboard';
-
-    protected static ?string $title = 'Dashboard';
-
-    protected static ?string $slug = 'dashboard';
+    public function getHeading(): string
+    {
+        return '';
+    }
 }
