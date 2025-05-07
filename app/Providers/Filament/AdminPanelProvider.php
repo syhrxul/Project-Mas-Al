@@ -38,6 +38,7 @@ class AdminPanelProvider extends PanelProvider
             ->discoverWidgets(in: app_path('Filament/Widgets/Admin'), for: 'App\\Filament\\Widgets\\Admin')
             ->widgets([
                 \App\Filament\Widgets\Admin\RentalStatsWidget::class,
+                \App\Filament\Widgets\Admin\RentalChartWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,
