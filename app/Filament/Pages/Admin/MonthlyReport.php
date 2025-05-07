@@ -12,7 +12,7 @@ class MonthlyReport extends Page
 {
     protected static ?string $navigationIcon = 'heroicon-o-document-chart-bar';
     protected static ?string $navigationLabel = 'Laporan Bulanan';
-    protected static ?string $title = 'Laporan Bulanan Penyewaan';
+    protected static ?string $title = 'Laporan Bulanan AL Management';
     protected static ?string $navigationGroup = 'Management';
     protected static ?int $navigationSort = 2;
 

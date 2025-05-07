@@ -29,7 +29,7 @@ class UserPanelProvider extends PanelProvider
             ->path('user')
             ->login()
             ->profile()
-            ->brandName('Customer Panel')
+            ->brandName('Al Management')
             ->colors([
                 'primary' => Color::Blue,
             ])
