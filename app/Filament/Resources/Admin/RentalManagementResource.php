@@ -169,4 +169,68 @@ class RentalManagementResource extends Resource
             'view' => Pages\ViewRentalManagement::route('/{record}'),
         ];
     }
+
+    public static function getWidgets(): array
+    {
+        return [
+            Widgets\StatsOverviewWidget::class,
+        ];
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::where('status', 'waiting')->count();
+    }
+
+    public function getTableColumns(): array
+    {
+        return [
+            Tables\Columns\TextColumn::make('id')
+                ->label('ID')
+                ->sortable(),
+            
+            Tables\Columns\TextColumn::make('user.name')
+                ->label('Pelanggan')
+                ->searchable()
+                ->sortable(),
+                
+            Tables\Columns\TextColumn::make('product.title')
+                ->label('Produk')
+                ->searchable()
+                ->sortable(),
+                
+            Tables\Columns\TextColumn::make('status')
+                ->badge()
+                ->color(fn (string $state): string => match ($state) {
+                    'waiting' => 'warning',
+                    'confirmed' => 'success',
+                    'cancelled' => 'danger',
+                    'rejected' => 'danger',
+                    'completed' => 'primary',
+                    default => 'gray',
+                })
+                ->sortable(),
+                
+            Tables\Columns\TextColumn::make('created_at')
+                ->label('Tanggal Permintaan')
+                ->dateTime()
+                ->sortable(),
+        ];
+    }
+
+    public function getTableFilters(): array
+    {
+        return [
+            Tables\Filters\SelectFilter::make('status')
+                ->options([
+                    'waiting' => 'Menunggu',
+                    'confirmed' => 'Aktif',
+                    'cancelled' => 'Dibatalkan',
+                    'rejected' => 'Ditolak',
+                    'completed' => 'Selesai',
+                ])
+                ->multiple()
+                ->default(['waiting', 'confirmed']),
+        ];
+    }
 }

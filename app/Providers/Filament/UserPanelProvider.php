@@ -28,6 +28,8 @@ class UserPanelProvider extends PanelProvider
             ->id('user')
             ->path('user')
             ->login()
+            ->profile()
+            ->brandName('Customer Panel')
             ->colors([
                 'primary' => Color::Blue,
             ])
@@ -38,7 +40,7 @@ class UserPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets/User'), for: 'App\\Filament\\Widgets\\User')
             ->widgets([
-                Widgets\AccountWidget::class,
+                \App\Filament\Widgets\User\UserRentalWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,
