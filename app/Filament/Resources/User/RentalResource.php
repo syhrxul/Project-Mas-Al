@@ -109,27 +109,34 @@ class RentalResource extends Resource
                     ->icon('heroicon-o-shopping-bag')
                     ->color('success')
                     ->form([
-                        TextInput::make('whatsapp_number')
+                        Forms\Components\Select::make('contact_type')
+                            ->label('Pilih Metode Kontak')
+                            ->options([
+                                'whatsapp' => 'WhatsApp',
+                                
+                            ])
+                            ->required()
+                            ->reactive(),
+                    
+                        Forms\Components\TextInput::make('whatsapp_number')
                             ->label('Nomor WhatsApp')
                             ->tel()
                             ->required()
+                            ->visible(fn (callable $get) => $get('contact_type') === 'whatsapp')
                             ->placeholder('Contoh: 08123456789')
                             ->regex('/^08[0-9]{8,11}$/')
                             ->helperText('Masukkan nomor WhatsApp aktif yang dapat dihubungi')
                             ->validationMessages([
                                 'regex' => 'Format nomor WhatsApp tidak valid. Gunakan format 08xxxxxxxxxx',
-                            ])
-                            ->dehydrateStateUsing(function ($state) {
-                                // Hapus semua karakter non-digit
-                                $number = preg_replace('/[^0-9]/', '', $state);
-                                
-                                // Jika dimulai dengan 0, ganti dengan 62
-                                if (str_starts_with($number, '0')) {
-                                    $number = '62' . substr($number, 1);
-                                }
-                                
-                                return $number;
-                            }),
+                            ]),
+                    
+                        Forms\Components\TextInput::make('email')
+                            ->label('Alamat Email')
+                            ->email()
+                            ->required()
+                            ->visible(fn (callable $get) => $get('contact_type') === 'email')
+                            ->placeholder('Contoh: nama@email.com')
+                            ->helperText('Masukkan alamat email aktif yang dapat dihubungi'),
                     ])
                     ->action(function (Collection $records, array $data) {
                         foreach ($records as $record) {
@@ -140,14 +147,16 @@ class RentalResource extends Resource
                                     'quantity' => $product->quantity - $record->quantity
                                 ]);
                                 
+                                // Update dengan contact info
                                 $record->update([
                                     'status' => 'waiting',
-                                    'whatsapp_number' => $data['whatsapp_number']
+                                    'whatsapp_number' => $data['contact_type'] === 'whatsapp' ? $data['whatsapp_number'] : null,
+                                    'email' => $data['contact_type'] === 'email' ? $data['email'] : null,
                                 ]);
                                 
                                 Notification::make()
                                     ->title('Order submitted')
-                                    ->body("Pesanan Anda untuk {$record->product->title} telah dikirim dan menunggu konfirmasi admin. Admin akan menghubungi Anda melalui WhatsApp untuk informasi pembayaran.")
+                                    ->body("Pesanan Anda untuk {$record->product->title} telah dikirim dan menunggu konfirmasi admin.")
                                     ->success()
                                     ->send();
                             }

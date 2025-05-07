@@ -68,8 +68,28 @@ class ViewProduct extends ViewRecord
                     $endDateTime = Carbon::parse($data['end_datetime']);
                     $quantity = (int) $data['quantity'];
 
+                    // Add validation for maximum quantity
+                    if ($quantity > 100) {
+                        Notification::make()
+                            ->title('Invalid quantity')
+                            ->body('Maksimum pemesanan adalah 100 unit.')
+                            ->danger()
+                            ->send();
+                        return;
+                    }
+
                     // Calculate the total price
                     $totalPrice = $this->calculateTotalPrice($startDateTime, $endDateTime, $quantity);
+
+                    // Add validation for maximum total price
+                    if ($totalPrice > 999999999999.99) {
+                        Notification::make()
+                            ->title('Total harga terlalu besar')
+                            ->body('Total harga sewa melebihi batas maksimum yang diizinkan.')
+                            ->danger()
+                            ->send();
+                        return;
+                    }
 
                     // Create the rental without reducing product quantity
                     Rental::create([
