@@ -11,6 +11,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Notifications\Notification;
+use App\Services\InvoiceService;
 
 class RentalManagementResource extends Resource
 {
@@ -123,6 +124,10 @@ class RentalManagementResource extends Resource
                             ->body("The rental request has been approved.")
                             ->success()
                             ->send();
+                        
+                        // Generate dan kirim invoice secara otomatis
+                        $invoiceService = new InvoiceService();
+                        return $invoiceService->generateAndSendInvoice($record);
                     }),
                 
                 Tables\Actions\Action::make('reject')

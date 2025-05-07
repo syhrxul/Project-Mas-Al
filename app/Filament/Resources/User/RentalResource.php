@@ -8,6 +8,7 @@ use App\Models\Rental;
 use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -107,31 +108,51 @@ class RentalResource extends Resource
                     ->label('Checkout Selected Items')
                     ->icon('heroicon-o-shopping-bag')
                     ->color('success')
-                    ->action(function (Collection $records) {
-                        // Process the selected items
+                    ->form([
+                        TextInput::make('whatsapp_number')
+                            ->label('Nomor WhatsApp')
+                            ->tel()
+                            ->required()
+                            ->placeholder('Contoh: 08123456789')
+                            ->regex('/^08[0-9]{8,11}$/')
+                            ->helperText('Masukkan nomor WhatsApp aktif yang dapat dihubungi')
+                            ->validationMessages([
+                                'regex' => 'Format nomor WhatsApp tidak valid. Gunakan format 08xxxxxxxxxx',
+                            ])
+                            ->dehydrateStateUsing(function ($state) {
+                                // Hapus semua karakter non-digit
+                                $number = preg_replace('/[^0-9]/', '', $state);
+                                
+                                // Jika dimulai dengan 0, ganti dengan 62
+                                if (str_starts_with($number, '0')) {
+                                    $number = '62' . substr($number, 1);
+                                }
+                                
+                                return $number;
+                            }),
+                    ])
+                    ->action(function (Collection $records, array $data) {
                         foreach ($records as $record) {
                             if ($record->status === 'pending') {
-                                // Get the product
                                 $product = $record->product;
                                 
-                                // Reduce the product quantity now at checkout
                                 $product->update([
                                     'quantity' => $product->quantity - $record->quantity
                                 ]);
                                 
-                                // Update status to 'waiting' instead of 'confirmed'
-                                $record->update(['status' => 'waiting']);
+                                $record->update([
+                                    'status' => 'waiting',
+                                    'whatsapp_number' => $data['whatsapp_number']
+                                ]);
                                 
-                                // Send notification for each item
                                 Notification::make()
                                     ->title('Order submitted')
-                                    ->body("Your rental for {$record->product->title} has been submitted and is waiting for admin approval.")
+                                    ->body("Pesanan Anda untuk {$record->product->title} telah dikirim dan menunggu konfirmasi admin. Admin akan menghubungi Anda melalui WhatsApp untuk informasi pembayaran.")
                                     ->success()
                                     ->send();
                             }
                         }
                         
-                        // Use a more direct approach to redirect
                         return redirect(RentalHistoryResource::getUrl('index'));
                     })
             ]);
